@@ -26,7 +26,7 @@
 
       if (error) throw error;
       
-      successMsg = 'Added successfully!';
+      successMsg = 'Sana lisätty pilveen!';
       word = ''; // Reset input
       
       setTimeout(() => {
@@ -35,7 +35,7 @@
       
     } catch (err: any) {
       console.error(err);
-      errorMsg = err.message || 'Failed to submit word. Make sure the database is running.';
+      errorMsg = err.message || 'Sanan lähettäminen epäonnistui. Varmista, että tietokanta on käynnissä.';
     } finally {
       submitting = false;
     }
@@ -46,15 +46,15 @@
   <title>Join Live Cloud</title>
 </svelte:head>
 
-<div class="glass-panel" style="width: 100%; max-width: 500px; text-align: center;">
-  <h2>Submit a Word</h2>
-  <p style="margin-bottom: 2rem;">What's on your mind?</p>
+<div class="glass-panel" style="width: 100%; max-width: 500px; text-align: center; margin: auto;">
+  <h2>Lisää sana pilveen</h2>
+  <p style="margin-bottom: 2rem;">Mitä on mielessäsi?</p>
 
   <form on:submit|preventDefault={submitWord} style="display: flex; flex-direction: column; gap: 1rem;">
     <input 
       type="text" 
       bind:value={word} 
-      placeholder="Type a word..." 
+      placeholder="Kirjoita sana..." 
       maxlength="30"
       required
       disabled={submitting}
@@ -62,9 +62,9 @@
     
     <button type="submit" class="btn-primary" disabled={submitting || !word.trim()}>
       {#if submitting}
-        Submitting...
+        Lähetetään...
       {:else}
-        Send to Cloud
+        Lähetä sana sanapilveen
       {/if}
     </button>
   </form>

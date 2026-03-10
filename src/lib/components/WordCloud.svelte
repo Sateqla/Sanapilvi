@@ -7,7 +7,7 @@
   export let wordCount: number = 0;
 
   let container: HTMLDivElement;
-  let wordsData: { text: string; size: number }[] = [];
+  let wordsData: { text: string; size: number; color: string }[] = [];
   let cloudWords: any[] = [];
   let subscription: any;
   let layout: any;
@@ -18,17 +18,23 @@
   
   $: wordCount = rawWords.length;
 
+  // JAMK brand colors palette for the words (Pink, Yellow, Teal, White)
+  const colors = ['#e2066f', '#fdb913', '#00b49d', '#ffffff'];
+
   function calculateFrequencies() {
     const counts: Record<string, number> = {};
     rawWords.forEach(w => {
       counts[w] = (counts[w] || 0) + 1;
     });
 
-    // Map to array and scale sizes
-    // Base size 20, max size heavily depends on freq
-    wordsData = Object.entries(counts).map(([text, count]) => ({
+    // Sort entries by frequency (descending) so color rotation is stable for the top words
+    const sortedEntries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+
+    // Map to array, scale sizes, and assign colors based on the stable sorted index
+    wordsData = sortedEntries.map(([text, count], index) => ({
       text,
-      size: 20 + count * 15 // Scale factor
+      size: 20 + count * 15, // Scale factor
+      color: colors[index % colors.length]
     }));
 
     updateCloud();
@@ -46,7 +52,7 @@
       .padding(10) // Increase padding between words slightly
       .spiral('archimedean') // Use Archimedean spiral for dense, non-overlapping packing
       .rotate(() => 0) // Always horizontal
-      .font('Outfit')
+      .font('sofia-pro')
       .fontSize((d: any) => d.size)
       .on('end', (words: any[], bounds: any[]) => {
         cloudWords = words;
@@ -114,13 +120,6 @@
       supabase.removeChannel(subscription);
     }
   });
-  
-  // Custom color palette for the words to look beautiful
-  const colors = ['#f472b6', '#a78bfa', '#38bdf8', '#34d399', '#fbbf24', '#f87171', '#e879f9'];
-  
-  function getColor(index: number) {
-    return colors[index % colors.length];
-  }
 </script>
 
 <div class="word-cloud-wrapper" bind:this={container}>
@@ -131,7 +130,7 @@
           <text
             text-anchor="middle"
             transform={`translate(${word.x}, ${word.y}) rotate(${word.rotate})`}
-            style="font-size: {word.size}px; fill: {getColor(i)}; transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);"
+            style="font-size: {word.size}px; fill: {word.color}; transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);"
           >
             {word.text}
           </text>

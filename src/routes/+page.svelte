@@ -47,13 +47,13 @@
 </script>
 
 <svelte:head>
-  <title>Live Word Cloud - Create Session</title>
+  <title>Sanapilvi - Luo uusi sanapilvi!</title>
 </svelte:head>
 
-<div class="glass-panel" style="text-align: center; max-width: 600px;">
-  <h1>Live Word Cloud</h1>
+<div class="glass-panel" style="text-align: center; max-width: 600px; margin: auto;">
+  <h1>Sanapilvi</h1>
   <p style="margin-bottom: 2rem;">
-    Create an interactive visual cloud on the fly. Gather spontaneous thoughts from your audience in real-time.
+    Luo interaktiivinen sanapilvi reaaliajassa. Kerää osallistujien ajatuksia ja näe ne visualisoituna hetkessä.
   </p>
 
   {#if !supabaseConnected}
@@ -64,9 +64,9 @@
 
   <button class="btn-primary" on:click={createSession} disabled={creating || !supabaseConnected}>
     {#if creating}
-      Creating Session...
+      Luodaan uutta sanapilveä...
     {:else}
-      Start a New Session
+      Luo uusi sanapilvi!
     {/if}
   </button>
   

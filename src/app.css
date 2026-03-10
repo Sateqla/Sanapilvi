@@ -1,15 +1,17 @@
 /* src/app.css */
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
+@import url('https://use.typekit.net/jut7nqs.css');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap'); /* Open source fallback font */
 
 :root {
-  --bg-gradient-start: #0f172a; /* Slate 900 */
-  --bg-gradient-end: #1e1b4b; /* Indigo 950 */
-  --surface-color: rgba(255, 255, 255, 0.05);
-  --surface-border: rgba(255, 255, 255, 0.1);
-  --text-primary: #f8fafc;
-  --text-secondary: #cbd5e1;
-  --accent-color: #8b5cf6; /* Violet 500 */
-  --accent-hover: #a78bfa; /* Violet 400 */
+  --bg-gradient-start: #ffffff; /* White background */
+  --bg-gradient-end: #ffffff;
+  --surface-color: #0D004C; /* JAMK Blue */
+  --surface-border: #0D004C;
+  --text-primary: #000000; /* Black text on white backgorund */
+  --text-secondary: #333333;
+  --text-surface: #ffffff; /* White text on blue containers */
+  --accent-color: #500257; /* Magenta accent for headings */
+  --accent-hover: #0D004C;
   --error-color: #ef4444; 
 }
 
@@ -20,8 +22,8 @@
 }
 
 body {
-  font-family: 'Outfit', sans-serif;
-  background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+  font-family: 'sofia-pro', 'Outfit', sans-serif;
+  background: var(--bg-gradient-start);
   color: var(--text-primary);
   min-height: 100vh;
   margin: 0;
@@ -40,30 +42,28 @@ main {
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 2rem;
+  padding: 0; /* Remove all padding so header fills top to bottom */
   width: 100%;
 }
 
 /* Glassmorphism Utilities */
 .glass-panel {
   background: var(--surface-color);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--surface-border);
-  border-radius: 20px;
+  color: var(--text-surface);
   padding: 2.5rem;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  /* Removed shadow to prevent bleeding between edge-to-edge containers */
 }
 
-/* Typography */
+/* Specific text overrides for elements inside the blue surface */
+.glass-panel h1, .glass-panel h2, .glass-panel p {
+  color: var(--text-surface);
+}
+
 h1 {
   font-size: 3.5rem;
   font-weight: 800;
   margin-bottom: 1rem;
-  background: linear-gradient(to right, #a78bfa, #f472b6);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--accent-color);
   text-align: center;
 }
 
@@ -73,47 +73,45 @@ p {
   line-height: 1.6;
 }
 
-/* Forms & Inputs */
 input[type="text"] {
   width: 100%;
   padding: 1rem 1.5rem;
   font-size: 1.25rem;
-  font-family: 'Outfit', sans-serif;
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid var(--surface-border);
-  color: var(--text-primary);
-  border-radius: 12px;
+  font-family: 'sofia-pro', 'Outfit', sans-serif;
+  background: #ffffff;
+  border: none;
+  border-bottom: 2px solid rgba(13, 0, 76, 0.3); /* Transparent JAMK blue */
+  border-radius: 4px 4px 0 0; /* Slight rounding on top */
+  color: #000000; /* Black text on white background */
   outline: none;
-  transition: all 0.3sease;
+  transition: all 0.3s ease;
 }
 
 input[type="text"]:focus {
-  border-color: var(--accent-color);
-  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.3);
+  border-bottom-color: var(--accent-color);
+  background: #f8f8f8;
 }
 
 /* Buttons */
 .btn-primary {
-  background: linear-gradient(135deg, #8b5cf6, #d946ef);
+  background: #e2066f; /* JAMK Pink */
   color: white;
   border: none;
   padding: 1rem 2rem;
   font-size: 1.25rem;
   font-weight: 600;
-  font-family: 'Outfit', sans-serif;
-  border-radius: 12px;
+  font-family: 'sofia-pro', 'Outfit', sans-serif;
+  border-radius: 0;
   cursor: pointer;
-  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s;
-  box-shadow: 0 4px 14px 0 rgba(139, 92, 246, 0.39);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
+  transform: translateY(-2px);
 }
 
 .btn-primary:active {
-  transform: translateY(1px) scale(0.98);
+  transform: translateY(1px);
 }
 
 .btn-primary:disabled {

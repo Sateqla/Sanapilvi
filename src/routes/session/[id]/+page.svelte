@@ -21,7 +21,7 @@
         width: 300,
         margin: 2,
         color: {
-          dark: '#1e1b4b', // Dark purple module color
+          dark: '#000000', // Black QR Code
           light: '#ffffff'  // White background
         }
       });
@@ -33,18 +33,19 @@
 </script>
 
 <svelte:head>
-  <title>Live Session - Presenter View</title>
+  <title>Sanapilvi - Esittäjän näkymä</title>
 </svelte:head>
 
 <div class="session-header">
-  <h2>Live Word Cloud</h2>
+  <img src="/jamk-logo.svg" alt="JAMK Logo" class="brand-logo" />
+  <h2>Sanapilvi</h2>
 </div>
 
 <div class="presenter-layout">
   <!-- Word Cloud Section -->
   <div class="cloud-container glass-panel">
       {#if wordCount === 0}
-        <p class="waiting-text">Waiting for words to the cloud...</p>
+        <p class="waiting-text">Odotellaan sanoja pilveen...</p>
       {/if}
       
       {#if sessionId}
@@ -54,8 +55,8 @@
 
   <!-- Sidebar: QR Code and Instructions -->
   <aside class="sidebar glass-panel">
-    <h3>Join the Session!</h3>
-    <p>Scan the code or go to the link to participate.</p>
+    <h3>Liity mukaan!</h3>
+    <p>Skannaa QR-koodi tai klikkaa linkkiä osallistuaksesi.</p>
     
     {#if qrCodeDataUrl}
       <div class="qr-container">
@@ -72,7 +73,7 @@
 <style>
   .presenter-layout {
     display: flex;
-    gap: 2rem;
+    gap: 0; /* Remove gap so they sit directly next to each other */
     width: 100%;
     flex: 1; /* Take up remaining height */
     min-height: 0; /* Important for flex children to allow scrolling/resizing properly */
@@ -86,18 +87,34 @@
     justify-content: center;
     position: relative;
     overflow: hidden;
+    /* JAMK Blue vertical gradient */
+    background: linear-gradient(180deg, #10054F 0%, #332682 100%) !important;
   }
 
   .session-header {
-    text-align: center;
-    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
     width: 100%;
+    background-color: #0D014D; /* JAMK Tolopea Navy */
+    padding: 2.5rem 0; /* Add padding so the background is visible around text */
+    margin: 0; /* Remove margin-bottom to connect seamlessly with containers below if needed */
+  }
+
+  .brand-logo {
+    position: absolute;
+    left: 4rem;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 45px; /* Adjust size based on visual proportions */
+    width: auto;
   }
 
   .session-header h2 {
     font-size: 2.5rem;
     margin: 0;
-    color: var(--text-primary);
+    color: #ffffff; /* White text */
   }
 
   .waiting-text {
@@ -115,17 +132,25 @@
     align-items: center;
     text-align: center;
     gap: 1.5rem;
+    background-color: #e2066f !important; /* JAMK Pink background */
+    color: #ffffff !important; /* White text */
+  }
+
+  .sidebar h3, .sidebar p {
+    color: #ffffff !important; /* Override default heading/text color */
   }
 
   .sidebar h3 {
     color: var(--accent-hover);
+    font-size: 2rem;
+    font-weight: bold;
   }
 
   .qr-container {
     background: white;
     padding: 10px;
-    border-radius: 12px;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    border-radius: 0;
+    box-shadow: 0 5px 15px -3px rgba(0, 0, 0, 0.1);
   }
 
   .qr-container img {
@@ -136,21 +161,23 @@
   }
 
   .link-box {
-    background: rgba(0,0,0,0.3);
+    background: #0d004c; /* JAMK Blue background for link */
     padding: 1rem;
-    border-radius: 8px;
+    border-radius: 0;
     width: 100%;
     word-break: break-all;
-    border: 1px solid var(--surface-border);
+    border: none;
   }
 
   .link-box a {
-    color: #38bdf8;
+    color: #ffffff; /* White text on blue background */
     text-decoration: none;
     font-weight: 600;
   }
   
-  .link-box a:hover {
+  .link-box a:hover,
+  .link-box:hover a,
+  .qr-container:hover + .link-box a {
     text-decoration: underline;
   }
 
