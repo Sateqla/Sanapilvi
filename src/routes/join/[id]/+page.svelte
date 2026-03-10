@@ -43,7 +43,7 @@
 </script>
 
 <svelte:head>
-  <title>Join Live Cloud</title>
+  <title>Sanapilvi - Liity mukaan!</title>
 </svelte:head>
 
 <div class="glass-panel" style="width: 100%; max-width: 500px; text-align: center; margin: auto;">

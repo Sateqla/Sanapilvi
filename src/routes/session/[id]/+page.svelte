@@ -119,7 +119,9 @@
 
   .waiting-text {
     position: absolute;
-    color: var(--text-secondary);
+    color: #ffffff;
+    font-size: 2rem;
+    text-align: center;
     z-index: 10;
     pointer-events: none;
   }

@@ -78,18 +78,13 @@ input[type="text"] {
   padding: 1rem 1.5rem;
   font-size: 1.25rem;
   font-family: 'sofia-pro', 'Outfit', sans-serif;
-  background: #ffffff;
+  background: #f8f8f8;
   border: none;
-  border-bottom: 2px solid rgba(13, 0, 76, 0.3); /* Transparent JAMK blue */
-  border-radius: 4px 4px 0 0; /* Slight rounding on top */
+  border-bottom: 2px solid var(--accent-color); /* JAMK Pink */
+  border-radius: 0; /* No rounded corners */
   color: #000000; /* Black text on white background */
   outline: none;
   transition: all 0.3s ease;
-}
-
-input[type="text"]:focus {
-  border-bottom-color: var(--accent-color);
-  background: #f8f8f8;
 }
 
 /* Buttons */
