@@ -10,6 +10,19 @@
   let qrCodeDataUrl = '';
   let joinUrl = '';
   let wordCount = 0;
+  let copySuccess = false;
+
+  async function copyLink() {
+    try {
+      await navigator.clipboard.writeText(joinUrl);
+      copySuccess = true;
+      setTimeout(() => {
+        copySuccess = false;
+      }, 2000);
+    } catch (err) {
+      console.error('Failed to copy', err);
+    }
+  }
 
   onMount(async () => {
     // Determine the full join URL based on the current origin
@@ -65,7 +78,11 @@
     {/if}
     
     <div class="link-box">
-      <a href={joinUrl} target="_blank" rel="noopener noreferrer">{joinUrl}</a>
+      <button class="copy-button" onclick={copyLink} aria-label="Kopioi osallistumislinkki">
+        <i class="fa-solid {copySuccess ? 'fa-check' : 'fa-copy'}"></i>
+        <span>{copySuccess ? 'Kopioitu!' : 'Kopioi osallistumislinkki'}</span>
+      </button>
+      <a href={joinUrl} target="_blank" rel="noopener noreferrer">({joinUrl})</a>
     </div>
   </aside>
 </div>
@@ -164,22 +181,48 @@
 
   .link-box {
     background: #0d004c; /* JAMK Blue background for link */
-    padding: 1rem;
+    padding: 1.5rem 1rem;
     border-radius: 0;
     width: 100%;
     word-break: break-all;
     border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .copy-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    padding: 0.25rem;
+    margin-bottom: 0.5rem;
+    transition: opacity 0.2s;
+  }
+
+  .copy-button:hover {
+    opacity: 0.8;
+  }
+
+  .copy-button i {
+    font-size: 1.1rem;
   }
 
   .link-box a {
     color: #ffffff; /* White text on blue background */
     text-decoration: none;
-    font-weight: 600;
   }
   
-  .link-box a:hover,
-  .link-box:hover a,
-  .qr-container:hover + .link-box a {
+  .link-box a:hover {
     text-decoration: underline;
   }
 

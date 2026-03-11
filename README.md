@@ -1,22 +1,26 @@
-# sv
+# Sanapilvi (Live Word Cloud)
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+A real-time, visual word cloud application built with SvelteKit, Supabase, and D3.js.
 
-## Creating a project
+## Features
 
-If you're seeing this, you've probably already done this step. Congrats!
+- **Session Management**: Create and store distinct word cloud sessions.
+- **Easy Participation**: Allow users to add words to sessions via direct sharing links or QR codes—zero login required.
+- **Real-Time Visualization**: Display a visually appealing word cloud that updates live as new words are submitted, dynamically scaling word sizes and adjusting positions based on submission frequency.
+- **Automated Cleanup (Optional)**: Can be configured with `pg_cron` to automatically delete sessions and words older than 2 months to keep the database tidy.
 
-```sh
-# create a new project
-npx sv create my-app
-```
+## Database Requirement
 
-To recreate this project with the same configuration:
+**⚠️ Important**: By default, this project is configured to use **[Supabase](https://supabase.com/)** as its backend database.
 
-```sh
-# recreate this project
-npx sv create --template minimal --types ts --install npm .
-```
+It leverages Supabase for:
+- Connecting to a PostgreSQL database for storing sessions and words.
+- Utilizing **Supabase Realtime** via Postgres publications to listen for and instantly broadcast new word additions to the client.
+- Handling Row Level Security (RLS) to ensure basic limits for anonymous read/write access.
+
+Please refer to `schema.sql` for the exact table structures, RLS policies, and realtime publication configurations needed for your Supabase project.
+
+---
 
 ## Developing
 
@@ -38,5 +42,3 @@ npm run build
 ```
 
 You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.

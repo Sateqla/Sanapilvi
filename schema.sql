@@ -30,3 +30,13 @@ create policy "Allow public select on words" on words for select using (true);
 -- Check if the realtime publication exists, if not, create it
 -- Then add our 'words' table to it so we can subscribe to changes
 alter publication supabase_realtime add table words;
+
+-- 5. Automated Cleanup (Scheduled Delete)
+-- Requires pg_cron extension. You can run this in the Supabase SQL editor to
+-- schedule a daily job that deletes sessions (and cascadingly words) older than 2 months.
+-- create extension if not exists pg_cron;
+-- select cron.schedule(
+--   'delete-old-sessions',   -- name of the cron job
+--   '0 3 * * *',             -- run every day at 03:00 GMT
+--   $$ delete from sessions where created_at < now() - interval '2 months' $$
+-- );
