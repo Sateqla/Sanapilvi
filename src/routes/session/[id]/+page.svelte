@@ -50,7 +50,6 @@
 </svelte:head>
 
 <div class="session-header">
-  <img src="/jamk-logo.svg" alt="JAMK Logo" class="brand-logo" />
   <h2>Sanapilvi</h2>
 </div>
 
@@ -117,15 +116,6 @@
     background-color: #0D014D; /* JAMK Tolopea Navy */
     padding: 2.5rem 0; /* Add padding so the background is visible around text */
     margin: 0; /* Remove margin-bottom to connect seamlessly with containers below if needed */
-  }
-
-  .brand-logo {
-    position: absolute;
-    left: 4rem;
-    top: 50%;
-    transform: translateY(-50%);
-    height: 45px; /* Adjust size based on visual proportions */
-    width: auto;
   }
 
   .session-header h2 {
