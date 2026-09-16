@@ -105,8 +105,11 @@
         table: 'words',
         filter: `session_id=eq.${sessionId}` 
       }, payload => {
-        rawWords = [...rawWords, payload.new.word];
-        calculateFrequencies();
+        const w = payload.new?.word;
+        if (typeof w === 'string' && w.length > 0) {
+          rawWords = [...rawWords, w];
+          calculateFrequencies();
+        }
       })
       .subscribe();
       

@@ -35,7 +35,7 @@
       
     } catch (err: any) {
       console.error(err);
-      errorMsg = err.message || 'Sanan lähettäminen epäonnistui. Varmista, että tietokanta on käynnissä.';
+      errorMsg = 'Sanan lähettäminen epäonnistui. Yritä uudelleen.';
     } finally {
       submitting = false;
     }
