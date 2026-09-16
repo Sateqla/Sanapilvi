@@ -23,7 +23,11 @@ alter table words enable row level security;
 create policy "Allow public insert to sessions" on sessions for insert with check (true);
 create policy "Allow public select on sessions" on sessions for select using (true);
 
-create policy "Allow public insert to words" on words for insert with check (char_length(word) <= 30);
+create policy "Allow public insert to words" on words
+  for insert with check (
+    char_length(word) <= 30
+    AND (select count(*) from words existing where existing.session_id = session_id) < 500
+  );
 create policy "Allow public select on words" on words for select using (true);
 
 -- 4. Enable Realtime updates
