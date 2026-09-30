@@ -39,7 +39,7 @@
       }
     } catch (err: any) {
       console.error(err);
-      errorMsg = err.message || 'Failed to create a session';
+      errorMsg = 'Sanapilven luominen epäonnistui. Yritä uudelleen.';
     } finally {
       creating = false;
     }
@@ -62,7 +62,7 @@
     </div>
   {/if}
 
-  <button class="btn-primary" on:click={createSession} disabled={creating || !supabaseConnected}>
+  <button class="btn-primary" onclick={createSession} disabled={creating || !supabaseConnected}>
     {#if creating}
       Luodaan uutta sanapilveä...
     {:else}

@@ -46,6 +46,7 @@
     const width = container.clientWidth;
     const height = container.clientHeight;
 
+    layout?.stop();
     layout = cloud()
       .size([width, height])
       .words(wordsData.map(d => ({...d}))) // Clone array so d3 can mutate it
@@ -77,18 +78,19 @@
   onMount(() => {
     // 1. Initial fetch of existing words
     const fetchInitialData = async () => {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('words')
         .select('word')
         .eq('session_id', sessionId);
-        
+
+      if (error) throw error;
       if (data) {
         rawWords = data.map(d => d.word);
         calculateFrequencies();
       }
     };
     
-    fetchInitialData();
+    fetchInitialData().catch(err => console.error('Failed to load words:', err));
 
     // Handle window resize
     const resizeObserver = new ResizeObserver(() => {
@@ -98,7 +100,7 @@
 
     // 2. Subscribe to realtime inserts
     subscription = supabase
-      .channel('public:words')
+      .channel(`words:${sessionId}`)
       .on('postgres_changes', { 
         event: 'INSERT', 
         schema: 'public', 

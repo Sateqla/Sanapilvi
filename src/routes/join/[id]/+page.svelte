@@ -51,7 +51,7 @@
     <h2>Lisää sana pilveen</h2>
     <p style="margin-bottom: 2rem;">Mitä on mielessäsi?</p>
 
-    <form on:submit|preventDefault={submitWord} style="display: flex; flex-direction: column; gap: 1rem;">
+    <form onsubmit={(e) => { e.preventDefault(); submitWord(); }} style="display: flex; flex-direction: column; gap: 1rem;">
       <input 
         type="text" 
         bind:value={word} 
