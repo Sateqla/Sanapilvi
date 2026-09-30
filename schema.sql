@@ -26,7 +26,7 @@ create policy "Allow public select on sessions" on sessions for select using (tr
 create policy "Allow public insert to words" on words
   for insert with check (
     char_length(word) <= 30
-    AND (select count(*) from words existing where existing.session_id = session_id) < 500
+    AND (select count(*) from words w where w.session_id = (select session_id)) < 500
   );
 create policy "Allow public select on words" on words for select using (true);
 
