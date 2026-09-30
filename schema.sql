@@ -23,10 +23,22 @@ alter table words enable row level security;
 create policy "Allow public insert to sessions" on sessions for insert with check (true);
 create policy "Allow public select on sessions" on sessions for select using (true);
 
+-- Helper function to count words per session, used by the RLS insert policy.
+-- security definer so it runs as the owner and bypasses RLS when counting.
+create or replace function get_session_word_count(sid uuid)
+returns bigint
+language sql
+security definer
+set search_path = public
+stable
+as $$
+  select count(*) from words where session_id = sid;
+$$;
+
 create policy "Allow public insert to words" on words
   for insert with check (
     char_length(word) <= 30
-    AND (select count(*) from words w where w.session_id = (select session_id)) < 500
+    AND get_session_word_count(session_id) < 500
   );
 create policy "Allow public select on words" on words for select using (true);
 
