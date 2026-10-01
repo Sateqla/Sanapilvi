@@ -1,13 +1,19 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { supabase } from '$lib/supabase';
+  import { onMount } from 'svelte';
+  import { supabase, fetchSessionTopic } from '$lib/supabase';
 
   let word = '';
   let submitting = false;
   let errorMsg = '';
   let successMsg = '';
+  let topic = '';
 
   const sessionId = $page.params.id;
+
+  onMount(() => {
+    fetchSessionTopic(sessionId).then((t) => (topic = t));
+  });
 
   async function submitWord() {
     if (!word.trim() || submitting) return;
@@ -49,7 +55,11 @@
 <div class="join-container">
   <div class="glass-panel form-box">
     <h2>Lisää sana pilveen</h2>
-    <p style="margin-bottom: 2rem;">Mitä on mielessäsi?</p>
+    {#if topic}
+      <p class="topic">{topic}</p>
+    {:else}
+      <p style="margin-bottom: 2rem;">Mitä on mielessäsi?</p>
+    {/if}
 
     <form onsubmit={(e) => { e.preventDefault(); submitWord(); }} style="display: flex; flex-direction: column; gap: 1rem;">
       <input 
@@ -94,6 +104,14 @@
     max-width: 500px;
     text-align: center;
     /* margin: auto is no longer needed because of flexbox centering */
+  }
+
+  .topic {
+    margin-bottom: 2rem;
+    font-size: 1.3rem;
+    font-weight: 600;
+    white-space: pre-line; /* Keep line breaks the presenter typed */
+    overflow-wrap: anywhere;
   }
 
   @media (max-width: 900px) {

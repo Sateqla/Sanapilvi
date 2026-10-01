@@ -3,6 +3,7 @@
 -- 1. Create the Sessions table
 create table sessions (
   id uuid default gen_random_uuid() primary key,
+  topic text check (topic is null or char_length(topic) <= 200),
   created_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
 

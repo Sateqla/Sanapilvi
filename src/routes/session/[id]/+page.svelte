@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { page } from '$app/stores';
   import QRCode from 'qrcode';
+  import { fetchSessionTopic } from '$lib/supabase';
   
   import WordCloud from '$lib/components/WordCloud.svelte';
 
@@ -11,6 +12,7 @@
   let joinUrl = '';
   let wordCount = 0;
   let copySuccess = false;
+  let topic = '';
 
   async function copyLink() {
     try {
@@ -25,6 +27,8 @@
   }
 
   onMount(async () => {
+    fetchSessionTopic(sessionId).then((t) => (topic = t));
+
     // Determine the full join URL based on the current origin
     joinUrl = `${window.location.origin}/join/${sessionId}`;
     
@@ -50,7 +54,11 @@
 </svelte:head>
 
 <div class="session-header">
-  <h2>Sanapilvi</h2>
+  {#if topic}
+    <h2 class="topic">{topic}</h2>
+  {:else}
+    <h2>Sanapilvi</h2>
+  {/if}
 </div>
 
 <div class="presenter-layout">
@@ -122,6 +130,15 @@
     font-size: 2.5rem;
     margin: 0;
     color: #ffffff; /* White text */
+  }
+
+  .session-header h2.topic {
+    max-width: 90%;
+    font-size: 2rem;
+    line-height: 1.3;
+    text-align: center;
+    white-space: pre-line; /* Keep line breaks the presenter typed */
+    overflow-wrap: anywhere;
   }
 
   .waiting-text {

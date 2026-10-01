@@ -4,6 +4,9 @@
   import { env } from '$env/dynamic/public';
   import { onMount } from 'svelte';
 
+  const TOPIC_MAX_LENGTH = 200;
+
+  let topic = '';
   let creating = false;
   let errorMsg = '';
   let supabaseConnected = true;
@@ -27,7 +30,7 @@
     try {
       const { data, error } = await supabase
         .from('sessions')
-        .insert([{}])
+        .insert([{ topic: topic.trim() || null }])
         .select()
         .single();
 
@@ -62,6 +65,19 @@
     </div>
   {/if}
 
+  <div class="topic-field">
+    <label for="topic">Aihe tai ohje osallistujille (valinnainen)</label>
+    <textarea
+      id="topic"
+      bind:value={topic}
+      placeholder="Esim. Millä sanalla kuvailisit tämän päivän tunnelmaa?"
+      maxlength={TOPIC_MAX_LENGTH}
+      rows="3"
+      disabled={creating}
+    ></textarea>
+    <span class="char-count">{topic.length}/{TOPIC_MAX_LENGTH}</span>
+  </div>
+
   <button class="btn-primary" onclick={createSession} disabled={creating || !supabaseConnected}>
     {#if creating}
       Luodaan uutta sanapilveä...
@@ -74,3 +90,39 @@
     <p style="color: var(--error-color); margin-top: 1rem;">{errorMsg}</p>
   {/if}
 </div>
+
+<style>
+  .topic-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    text-align: left;
+  }
+
+  .topic-field label {
+    color: var(--text-surface);
+    font-weight: 600;
+  }
+
+  .topic-field textarea {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    font-size: 1.1rem;
+    font-family: 'sofia-pro', 'Outfit', sans-serif;
+    background: #f8f8f8;
+    border: none;
+    border-bottom: 2px solid var(--accent-color);
+    border-radius: 0;
+    color: #000000;
+    outline: none;
+    resize: vertical;
+  }
+
+  .char-count {
+    align-self: flex-end;
+    font-size: 0.85rem;
+    color: var(--text-surface);
+    opacity: 0.7;
+  }
+</style>
