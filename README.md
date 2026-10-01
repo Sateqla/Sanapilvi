@@ -5,6 +5,7 @@ A real-time, visual word cloud application built with SvelteKit, Supabase, and D
 ## Features
 
 - **Session Management**: Create and store distinct word cloud sessions.
+- **Session Topic (Optional)**: When creating a session, the presenter can enter a topic or instructions (up to 200 characters). It is shown at the top of the presenter's word cloud view and on the participants' submission page.
 - **Easy Participation**: Allow users to add words to sessions via direct sharing links or QR codes—zero login required.
 - **Real-Time Visualization**: Display a visually appealing word cloud that updates live as new words are submitted, dynamically scaling word sizes and adjusting positions based on submission frequency.
 - **Automated Cleanup (Optional)**: Can be configured with `pg_cron` to automatically delete sessions and words older than 2 months to keep the database tidy.

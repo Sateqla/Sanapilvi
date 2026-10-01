@@ -20,20 +20,26 @@ npm run check:watch  # Continuous type checking
 
 ### Data Flow
 
-1. Presenter hits `/` → creates `sessions` row in Supabase → redirected to `/session/[id]`
-2. Presenter page shows QR code linking to `/join/[id]` and a live word cloud
-3. Participants open `/join/[id]` → submit words → inserted into `words` table (uppercased)
+1. Presenter hits `/` → optionally enters a topic → creates `sessions` row (with `topic`, or `null` if empty) in Supabase → redirected to `/session/[id]`
+2. Presenter page shows the topic in the header (falls back to "Sanapilvi"), a QR code linking to `/join/[id]`, and a live word cloud
+3. Participants open `/join/[id]` → see the topic (falls back to "Mitä on mielessäsi?") → submit words → inserted into `words` table (uppercased)
 4. `WordCloud.svelte` subscribes to Supabase Realtime (`postgres_changes` on `words`, filtered by `session_id`) → updates local `rawWords` array → recalculates frequencies → D3-cloud re-layouts SVG
 
 ### Routes
 
 | Route | Purpose |
 |---|---|
-| `/` | Home — create new session |
-| `/session/[id]` | Presenter view — word cloud + QR code + share link |
-| `/join/[id]` | Participant view — word submission form |
+| `/` | Home — optional topic field + create new session |
+| `/session/[id]` | Presenter view — topic header + word cloud + QR code + share link |
+| `/join/[id]` | Participant view — topic + word submission form |
 
 No server-side routes — all data operations go through the Supabase client SDK in the browser.
+
+### Session Topic
+
+- Set once at session creation; there is no update policy on `sessions`, so the topic is immutable and is fetched once on mount (no Realtime subscription)
+- Both presenter and participant pages load it via `fetchSessionTopic()` in `src/lib/supabase.ts`, which returns `''` on missing id, no topic, or error
+- Rendered with `white-space: pre-line` to keep line breaks the presenter typed
 
 ### Key Component: `WordCloud.svelte`
 
@@ -45,7 +51,7 @@ No server-side routes — all data operations go through the Supabase client SDK
 
 ### Database (schema.sql)
 
-- `sessions(id uuid PK, created_at)`
+- `sessions(id uuid PK, topic text nullable (≤ 200 chars, check constraint), created_at)`
 - `words(id uuid PK, session_id FK → sessions, word text, created_at)`
 - RLS policies allow anonymous read/write — no auth required by design
 - Optional pg_cron job in schema to purge sessions/words older than 2 months
