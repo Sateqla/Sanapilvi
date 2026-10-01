@@ -56,7 +56,7 @@
 <div class="glass-panel" style="text-align: center; max-width: 600px; margin: auto;">
   <h1>Sanapilvi</h1>
   <p style="margin-bottom: 2rem;">
-    Luo interaktiivinen sanapilvi reaaliajassa. Kerää osallistujien ajatuksia ja näe ne visualisoituna hetkessä.
+    Luo interaktiivinen sanapilvi reaaliajassa. Kerää osallistujien ajatuksia ja näe ne visualisoituna.
   </p>
 
   {#if !supabaseConnected}

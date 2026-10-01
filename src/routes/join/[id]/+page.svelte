@@ -3,6 +3,8 @@
   import { onMount } from 'svelte';
   import { supabase, fetchSessionTopic } from '$lib/supabase';
 
+  const WORD_MAX_LENGTH = 30;
+
   let word = '';
   let submitting = false;
   let errorMsg = '';
@@ -61,15 +63,16 @@
       <p style="margin-bottom: 2rem;">Mitä on mielessäsi?</p>
     {/if}
 
-    <form onsubmit={(e) => { e.preventDefault(); submitWord(); }} style="display: flex; flex-direction: column; gap: 1rem;">
+    <form onsubmit={(e) => { e.preventDefault(); submitWord(); }} class="word-form">
       <input 
         type="text" 
         bind:value={word} 
         placeholder="Kirjoita sana..." 
-        maxlength="30"
+        maxlength={WORD_MAX_LENGTH}
         required
         disabled={submitting}
       />
+      <span class="char-count">{word.length}/{WORD_MAX_LENGTH}</span>
       
       <button type="submit" class="btn-primary" disabled={submitting || !word.trim()}>
         {#if submitting}
@@ -108,10 +111,24 @@
 
   .topic {
     margin-bottom: 2rem;
-    font-size: 1.3rem;
-    font-weight: 600;
+    font-size: 1.2rem;
+    font-weight: 400;
+    font-style: italic;
     white-space: pre-line; /* Keep line breaks the presenter typed */
     overflow-wrap: anywhere;
+  }
+
+  .word-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .char-count {
+    align-self: flex-end;
+    font-size: 0.85rem;
+    color: var(--text-surface);
+    opacity: 0.7;
   }
 
   @media (max-width: 900px) {
